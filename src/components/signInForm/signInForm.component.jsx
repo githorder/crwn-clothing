@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import { getRedirectResult } from 'firebase/auth';
 
@@ -12,6 +12,7 @@ import { signInGoogleWithRedirect } from '../../utils/firebase/firebase.utils';
 
 import FormInput from '../formInput/formInput.component';
 import Button from '../button/button.component';
+import { UserContext } from '../../contexts/user.context';
 
 import './signInForm.styles.scss';
 
@@ -21,6 +22,7 @@ const initFormFields = {
 };
 
 const SignInForm = () => {
+  const { setCurrentUser } = useContext(UserContext);
   const [formFields, setFormFields] = useState(initFormFields);
   const { email, password } = formFields;
 
@@ -38,6 +40,7 @@ const SignInForm = () => {
       const response = await getRedirectResult(auth);
 
       if (response) {
+        setCurrentUser(response.user);
         await createUserFromAuth(response.user);
       }
     })();
@@ -47,7 +50,8 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      await signInUserWithEmailAndPassword(email, password);
+      const { user } = await signInUserWithEmailAndPassword(email, password);
+      setCurrentUser(user);
       resetForm();
     } catch (err) {
       alert('Incorrect credintials');
