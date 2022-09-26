@@ -1,18 +1,12 @@
-import { useState, useEffect, useContext } from 'react';
-
-import { getRedirectResult } from 'firebase/auth';
+import { useState } from 'react';
 
 import {
-  createUserFromAuth,
-  auth,
   signInUserWithEmailAndPassword,
+  signInGoogleWithRedirect,
 } from '../../utils/firebase/firebase.utils';
-
-import { signInGoogleWithRedirect } from '../../utils/firebase/firebase.utils';
 
 import FormInput from '../formInput/formInput.component';
 import Button from '../button/button.component';
-import { UserContext } from '../../contexts/user.context';
 
 import './signInForm.styles.scss';
 
@@ -22,7 +16,6 @@ const initFormFields = {
 };
 
 const SignInForm = () => {
-  const { setCurrentUser } = useContext(UserContext);
   const [formFields, setFormFields] = useState(initFormFields);
   const { email, password } = formFields;
 
@@ -35,23 +28,11 @@ const SignInForm = () => {
     setFormFields(initFormFields);
   };
 
-  useEffect(() => {
-    (async () => {
-      const response = await getRedirectResult(auth);
-
-      if (response) {
-        setCurrentUser(response.user);
-        await createUserFromAuth(response.user);
-      }
-    })();
-  }, []);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const { user } = await signInUserWithEmailAndPassword(email, password);
-      setCurrentUser(user);
+      await signInUserWithEmailAndPassword(email, password);
       resetForm();
     } catch (err) {
       alert('Incorrect credintials');
@@ -84,7 +65,7 @@ const SignInForm = () => {
           <Button
             type="button"
             onClick={signInGoogleWithRedirect}
-            buttonType="google"
+            buttonType="inverted"
           >
             Google sign in
           </Button>
