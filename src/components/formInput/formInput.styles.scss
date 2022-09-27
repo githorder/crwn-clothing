@@ -1,10 +1,11 @@
-$sub-color: grey;
+$sub-color: #7dca5c;
+$tertiary-color: grey;
 $main-color: black;
 
 @mixin shrinkLabel {
   top: -14px;
   font-size: 12px;
-  color: $main-color;
+  color: $sub-color;
 }
 
 .group {
@@ -21,8 +22,8 @@ $main-color: black;
     width: 100%;
     border: none;
     border-radius: 0;
-    border-bottom: 1px solid $sub-color;
     margin: 25px 0;
+    border-bottom: 1px solid $tertiary-color;
 
     &:-webkit-autofill,
     &:-webkit-autofill:focus {
@@ -30,6 +31,7 @@ $main-color: black;
     }
 
     &:focus {
+      border-bottom: 1px solid $sub-color;
       outline: none;
     }
 
@@ -43,7 +45,7 @@ $main-color: black;
   }
 
   .form-input-label {
-    color: $sub-color;
+    color: $tertiary-color;
     font-size: 16px;
     font-weight: normal;
     position: absolute;
