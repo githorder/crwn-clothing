@@ -25,9 +25,9 @@ const CheckoutItem = ({ id, imageUrl, name, quantity, price }) => {
           &#60;
         </div>
         <div className="value">{quantity}</div>
-        <span onClick={increaseCheckoutItemHandler} className="arrow">
+        <div onClick={increaseCheckoutItemHandler} className="arrow">
           &#62;
-        </span>
+        </div>
       </span>
       <span className="price">{price}</span>
       <div onClick={removeCheckoutItemHandler} className="remove-button">

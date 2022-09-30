@@ -17,6 +17,16 @@
     text-transform: uppercase;
   }
 
+  .empty-cart-container {
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 30%;
+      height: auto;
+    }
+  }
+
   .cart-items {
     height: 240px;
     display: flex;
@@ -30,9 +40,7 @@
     }
   }
 
-  a {
+  button {
     margin-top: auto;
-    margin-left: auto;
-    margin-right: auto;
   }
 }

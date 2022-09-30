@@ -1,11 +1,11 @@
-import Category from '../category/category.component';
+import CategoryItem from '../categoryItem/categoryItem.component';
 
 import './categories.styles.scss';
 
 const Categories = ({ categories }) => (
   <div className="categories-container">
     {categories.map((categoryProps, index) => (
-      <Category key={index} {...categoryProps} />
+      <CategoryItem key={index} {...categoryProps} />
     ))}
   </div>
 );
