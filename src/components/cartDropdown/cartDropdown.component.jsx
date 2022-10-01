@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../../contexts/cart.context';
 
 import './cartDropdown.styles.scss';
-import cartEmpty from '../../assets/emptyCart.jpg';
+
+import { ReactComponent as EmptyCart } from '../../assets/emptyCart.svg';
 
 import Button from '../button/button.component';
 import CartItem from '../cartItem/cartItem.component';
@@ -23,12 +24,9 @@ const CartDropdown = () => {
             <CartItem key={id} {...itemProps} />
           ))
         ) : (
-          <>
-            <span className="empty-message">The cart is empty</span>
-            <div className="empty-cart-container">
-              <img src={cartEmpty} alt="empty cart" />
-            </div>
-          </>
+          <div className="empty-cart-container">
+            <EmptyCart />
+          </div>
         )}
       </div>
       <Button onClick={goToCheckoutHandler}>GO TO CHECKOUT</Button>

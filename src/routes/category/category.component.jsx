@@ -21,7 +21,7 @@ const Category = () => {
       <div className="category-container">
         {products &&
           products.map(({ id, ...productProps }) => (
-            <ProductCard key={id} {...productProps} />
+            <ProductCard id={id} key={id} {...productProps} />
           ))}
       </div>
     </>
