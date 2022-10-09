@@ -4,7 +4,7 @@ import ProductCard from '../../components/productCard/productCard.component';
 
 import { CategoriesContext } from '../../contexts/categories.context';
 
-import './category.styles.scss';
+import { CategoryContainer, CategoryTitle } from './category.styles';
 
 const Category = () => {
   const { categories } = useContext(CategoriesContext);
@@ -17,13 +17,13 @@ const Category = () => {
 
   return (
     <>
-      <h2 className="category-title">{category}</h2>
-      <div className="category-container">
+      <CategoryTitle>{category}</CategoryTitle>
+      <CategoryContainer>
         {products &&
           products.map(({ id, ...productProps }) => (
             <ProductCard id={id} key={id} {...productProps} />
           ))}
-      </div>
+      </CategoryContainer>
     </>
   );
 };

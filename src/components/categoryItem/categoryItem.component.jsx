@@ -1,27 +1,28 @@
 import { useNavigate } from 'react-router-dom';
 
-import './categoryItem.styles.scss';
+import {
+  BackgroundImage,
+  Header,
+  CategoryItemContainer,
+  Title,
+  SubTitle,
+} from './categoryItem.styles';
 
 const CategoryItem = ({ imageUrl, title }) => {
   const navigate = useNavigate();
 
-  const goToHandler = () => {
+  const navigateHandler = () => {
     navigate(`/shop/${title}`);
   };
 
   return (
-    <div onClick={goToHandler} className="category-item-container">
-      <div
-        className="background-image"
-        style={{
-          backgroundImage: `url(${imageUrl})`,
-        }}
-      />
-      <div className="body">
-        <h2>{title.toUpperCase()}</h2>
-        <span>Shop now</span>
-      </div>
-    </div>
+    <CategoryItemContainer onClick={navigateHandler}>
+      <BackgroundImage imageUrl={imageUrl} />
+      <Header>
+        <Title>{title.toUpperCase()}</Title>
+        <SubTitle>Shop now</SubTitle>
+      </Header>
+    </CategoryItemContainer>
   );
 };
 

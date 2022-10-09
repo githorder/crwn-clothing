@@ -3,11 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 import { CartContext } from '../../contexts/cart.context';
 
-import './cartDropdown.styles.scss';
-
-import { ReactComponent as EmptyCart } from '../../assets/emptyCart.svg';
-
 import Button from '../button/button.component';
+
+import {
+  CartDropdownContainer,
+  CartItems,
+  EmptyCartIconContainer,
+  EmptyCartIcon,
+} from './cartDropdown.styles';
+
 import CartItem from '../cartItem/cartItem.component';
 
 const CartDropdown = () => {
@@ -17,20 +21,20 @@ const CartDropdown = () => {
   const goToCheckoutHandler = () => navigate('/checkout');
 
   return (
-    <div className="cart-dropdown-container">
-      <div className="cart-items">
+    <CartDropdownContainer>
+      <CartItems>
         {cartItems.length ? (
           cartItems.map(({ id, ...itemProps }) => (
             <CartItem key={id} {...itemProps} />
           ))
         ) : (
-          <div className="empty-cart-container">
-            <EmptyCart />
-          </div>
+          <EmptyCartIconContainer>
+            <EmptyCartIcon />
+          </EmptyCartIconContainer>
         )}
-      </div>
+      </CartItems>
       <Button onClick={goToCheckoutHandler}>GO TO CHECKOUT</Button>
-    </div>
+    </CartDropdownContainer>
   );
 };
 

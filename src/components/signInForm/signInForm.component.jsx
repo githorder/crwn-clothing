@@ -6,9 +6,15 @@ import {
 } from '../../utils/firebase/firebase.utils';
 
 import FormInput from '../formInput/formInput.component';
-import Button from '../button/button.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 
-import './signInForm.styles.scss';
+import {
+  SignInFormContainer,
+  SignInSubTitle,
+  SignInTitle,
+  BtnGroup,
+  GoogleIcon,
+} from './signInForm.styles';
 
 const initFormFields = {
   email: '',
@@ -40,9 +46,9 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="signInForm">
-      <h2>Already have an account?</h2>
-      <span>Sign in with email and password</span>
+    <SignInFormContainer>
+      <SignInTitle>Already have an account?</SignInTitle>
+      <SignInSubTitle>Sign in with email and password</SignInSubTitle>
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"
@@ -60,18 +66,18 @@ const SignInForm = () => {
           value={password}
           required
         />
-        <div className="btn-group">
+        <BtnGroup>
           <Button type="submit">Sign In</Button>
           <Button
             type="button"
             onClick={signInGoogleWithRedirect}
-            buttonType="inverted"
+            buttonType={BUTTON_TYPE_CLASSES.google}
           >
-            Google sign in
+            <GoogleIcon />
           </Button>
-        </div>
+        </BtnGroup>
       </form>
-    </div>
+    </SignInFormContainer>
   );
 };
 

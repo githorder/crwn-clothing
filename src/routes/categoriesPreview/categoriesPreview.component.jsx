@@ -4,13 +4,13 @@ import { CategoriesContext } from '../../contexts/categories.context';
 
 import CategoryPreview from '../../components/categoryPreview/categoryPreview.component';
 
-import './categoriesPreview.styles.scss';
+import { CategoriesPreviewContainer } from './categoriesPreview.styles';
 
 const CategoriesPreview = () => {
   const { categories } = useContext(CategoriesContext);
 
   return (
-    <div className="categories-preview-container">
+    <CategoriesPreviewContainer>
       {Object.keys(categories).map((title) => {
         return (
           <CategoryPreview
@@ -20,7 +20,7 @@ const CategoriesPreview = () => {
           />
         );
       })}
-    </div>
+    </CategoriesPreviewContainer>
   );
 };
 
