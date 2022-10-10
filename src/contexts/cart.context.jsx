@@ -1,4 +1,6 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useReducer } from 'react';
+
+import { createAction } from '../utils/reducer/reducer.utils';
 
 const addCartItem = (cartItems, productToAdd) => {
   const isProductInCart =
@@ -28,56 +30,92 @@ export const CartContext = createContext({
   removeItemFromCart: () => null,
 });
 
+export const CART_ACTIONS = {
+  SET_CART_ITEMS: 'SET_CART_ITEMS',
+  SET_DROPDOWN_OPEN: 'SET_DROPDOWN_OPEN',
+};
+
+const cartReducer = (state, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case CART_ACTIONS.SET_CART_ITEMS:
+      return {
+        ...state,
+        ...payload,
+      };
+    case CART_ACTIONS.SET_DROPDOWN_OPEN:
+      return {
+        ...state,
+        isDropdownOpen: payload,
+      };
+    default:
+      throw new Error(`Unhandled type ${type} error in cart reducer`);
+  }
+};
+
+const INIT_STATE = {
+  cartItems: [],
+  isDropdownOpen: false,
+  cartCount: 0,
+  total: 0,
+};
+
 export const CartProvider = ({ children }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [{ cartItems, isDropdownOpen, cartCount, total }, dispatch] =
+    useReducer(cartReducer, INIT_STATE);
 
-  const addItemToCart = (productToAdd) =>
-    setCartItems(addCartItem(cartItems, productToAdd));
+  const setIsDropdownOpen = (isOpen) =>
+    dispatch(createAction(CART_ACTIONS.SET_DROPDOWN_OPEN, isOpen));
 
-  const removeItemFromCart = (id) => {
-    setCartItems(cartItems.filter((cartItem) => cartItem.id !== id));
-  };
-
-  const decrementQuantity = (id) => {
-    setCartItems(
-      cartItems
-        .map((cartItem) =>
-          cartItem.id === id
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-        .filter(({ quantity }) => quantity > 0)
-    );
-  };
-
-  const incrementQuantity = (id) => {
-    setCartItems(
-      cartItems.map((cartItem) =>
-        cartItem.id === id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      )
-    );
-  };
-
-  useEffect(() => {
-    const newCartCount = cartItems.reduce(
+  const updateCartItemsReducer = (updatedCartItems) => {
+    const newCartCount = updatedCartItems.reduce(
       (sum, { quantity }) => sum + quantity,
       0
     );
-    setCartCount(newCartCount);
-  }, [cartItems]);
-
-  useEffect(() => {
-    const newTotal = cartItems.reduce(
+    const newTotal = updatedCartItems.reduce(
       (total, { quantity, price }) => total + quantity * price,
       0
     );
-    setTotal(newTotal);
-  }, [cartItems]);
+
+    dispatch(
+      createAction(CART_ACTIONS.SET_CART_ITEMS, {
+        total: newTotal,
+        cartCount: newCartCount,
+        cartItems: updatedCartItems,
+      })
+    );
+  };
+
+  const addItemToCart = (productToAdd) => {
+    const updatedCartItems = addCartItem(cartItems, productToAdd);
+    updateCartItemsReducer(updatedCartItems);
+  };
+
+  const removeItemFromCart = (id) => {
+    const updatedCartItems = cartItems.filter((cartItem) => cartItem.id !== id);
+    updateCartItemsReducer(updatedCartItems);
+  };
+
+  const decrementQuantity = (id) => {
+    const updatedCartItems = cartItems
+      .map((cartItem) =>
+        cartItem.id === id
+          ? { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem
+      )
+      .filter(({ quantity }) => quantity > 0);
+    updateCartItemsReducer(updatedCartItems);
+  };
+
+  const incrementQuantity = (id) => {
+    const updatedCartItems = cartItems.map((cartItem) =>
+      cartItem.id === id
+        ? { ...cartItem, quantity: cartItem.quantity + 1 }
+        : cartItem
+    );
+    updateCartItemsReducer(updatedCartItems);
+  };
 
   const value = {
     isDropdownOpen,
