@@ -14,6 +14,7 @@ import {
 } from './utils/firebase/firebase.utils';
 
 import { setCurrentUser } from './store/user/user.action';
+import { setCategoriesAsync } from './store/categories/categories.action';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ const App = () => {
     });
 
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    dispatch(setCategoriesAsync());
   }, []);
 
   return (

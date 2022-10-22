@@ -70,7 +70,7 @@ export const getCategoriesAndDocuments = async () => {
 
     return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
