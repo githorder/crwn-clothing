@@ -1,12 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-import { signOutUser } from '../../utils/firebase/firebase.utils';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 import Cart from '../../components/cart/cart.component';
 
 import { selectCurrentUser } from '../../store/user/user.selector';
+import { signOutStart } from '../../store/user/user.action';
 
 import {
   NavContainer,
@@ -16,6 +15,8 @@ import {
 } from './navigation.styles';
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+
   const currentUser = useSelector(selectCurrentUser);
 
   return (
@@ -27,7 +28,7 @@ const Navigation = () => {
         <NavLinksContainer>
           <NavLink to="/shop">SHOP</NavLink>
           {currentUser ? (
-            <NavLink as="span" onClick={signOutUser}>
+            <NavLink as="span" onClick={() => dispatch(signOutStart())}>
               SIGN OUT
             </NavLink>
           ) : (

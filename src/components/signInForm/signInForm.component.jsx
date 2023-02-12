@@ -1,9 +1,5 @@
 import { useState } from 'react';
-
-import {
-  signInUserWithEmailAndPassword,
-  signInGoogleWithRedirect,
-} from '../../utils/firebase/firebase.utils';
+import { useDispatch } from 'react-redux';
 
 import FormInput from '../formInput/formInput.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
@@ -15,6 +11,10 @@ import {
   BtnGroup,
   GoogleIcon,
 } from './signInForm.styles';
+import {
+  emailSigninStart,
+  googleSigninStart,
+} from '../../store/user/user.action';
 
 const initFormFields = {
   email: '',
@@ -22,6 +22,8 @@ const initFormFields = {
 };
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
+
   const [formFields, setFormFields] = useState(initFormFields);
   const { email, password } = formFields;
 
@@ -36,13 +38,8 @@ const SignInForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      await signInUserWithEmailAndPassword(email, password);
-      resetForm();
-    } catch (err) {
-      alert('Incorrect credintials');
-    }
+    dispatch(emailSigninStart(email, password));
+    resetForm();
   };
 
   return (
@@ -70,7 +67,7 @@ const SignInForm = () => {
           <Button type="submit">Sign In</Button>
           <Button
             type="button"
-            onClick={signInGoogleWithRedirect}
+            onClick={() => dispatch(googleSigninStart())}
             buttonType={BUTTON_TYPE_CLASSES.google}
           >
             <GoogleIcon />
